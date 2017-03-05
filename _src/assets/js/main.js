@@ -1,63 +1,44 @@
-// var Nav = React.createClass({
-// 	render: function () {
-// 		return (
-// 			<nav className="navbar navbar-toggleable-md navbar-light bg-faded">
-// 			  <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-// 			    <span className="navbar-toggler-icon"></span>
-// 			  </button>
-// 			  <a className="navbar-brand" href="#">Navbar</a>
-
-// 			  <div className="collapse navbar-collapse" id="navbarSupportedContent">
-// 			    <ul className="navbar-nav mr-auto">
-// 			      <li className="nav-item active">
-// 			        <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-// 			      </li>
-// 			      <li className="nav-item">
-// 			        <a className="nav-link" href="#">Link</a>
-// 			      </li>
-// 			      <li className="nav-item">
-// 			        <a className="nav-link disabled" href="#">Disabled</a>
-// 			      </li>
-// 			    </ul>
-// 			    <form className="form-inline my-2 my-lg-0">
-// 			      <input className="form-control mr-sm-2" type="text" placeholder="Search"/>
-// 			      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-// 			    </form>
-// 			  </div>
-// 			</nav>
-// 		);
-// 	}
-// });
-
-var Button = React.createClass({
-	
-	getInitialState : function () {
+var Page = React.createClass({
+	getInitialState: function () {
 		return {
-			click: false
+			data: [
+				{id: 1, name: 'Maria', email: 'maria@gmail.com', subject: 'react', message: 'me messenger test...'},
+				{id: 2, name: 'Pedro', email: 'pedro@gmail.com', subject: 'angular', message: 'me messenger test...'}
+			]
 		};
 	},
+	handleContactSubmit: function (contact) {
 
-	toggleClick: function () {
-		this.setState({
-			click: !this.state.click 
-		});
+		contact.id = (this.state.data.length + 1);
+
+		var newContactList = this.state.data.concat([contact]);
+		this.setState({data: newContactList});
+
 	},
-
-	render : function () {
-		var btnClass = this.state.click ? 'btn btn-primary' : 'btn btn-default';
-
+	render: function () {
 		return (
-			<button onClick={ this.toggleClick } className={ btnClass }>{ this.state.click ? this.props.textActive : this.props.title  }</button>
-			);
+			<div>
+				<Nav title="React" />
+				<div className="container">
+					<div className="row">
+						<div className="col-xs-12 col-md-12 col-sm-12">
+							<Form onContactSubmit={ this.handleContactSubmit }>
+								<Button textActive="Loading...">Send</Button>
+							</Form>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-xs-12 col-md-12 col-sm-12">
+							<List data={ this.state.data }/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
 	}
-})
-
-// ReactDOM.render(
-// 		<Nav title="React" />,
-// 		document.getElementById('app')
-// 	);
+});
 
 ReactDOM.render(
-		<Button title="Meu Botão" textActive="Loading..."/>,
-		document.getElementById('myButton')
+		<Page />,
+		document.getElementById('app')
 	);

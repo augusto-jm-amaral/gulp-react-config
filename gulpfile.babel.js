@@ -15,18 +15,22 @@ var cfg = {
 
 gulp.task('html', () => {
 	gulp.src([cfg.from + '/**/*.html'])
-			   .pipe($.changed(cfg.to, {extension: '.html'}))	
+			   // .pipe($.changed(cfg.to, {extension: '.html'}))	
 			   .pipe($.filesize())
 			   .pipe($.htmlmin({collapseWhitespace: true}))
 			   .pipe(gulp.dest(cfg.to));
 });
 
 gulp.task('css', () => {
-	gulp.src([cfg.from + '/assets/sass/**/*.scss', './bower_components/bootstrap/dist/css/bootstrap.min.css'])
-		  	   .pipe($.changed(cfg.to + '/assets/css', {extension: '.css'}))
+	gulp.src([
+				'./bower_components/bootstrap/dist/css/bootstrap.min.css',
+				cfg.from + '/assets/sass/**/*.scss'
+			])
+		  	   // .pipe($.changed(cfg.to + '/assets/css', {extension: '.css'}))
 			   .pipe($.sass())
 		       .on('error', handleError)
 			   .pipe($.cssnano())
+		       .on('error', handleError)
 			   .pipe($.minifyCss())
 			   .pipe($.concat('styles.min.css'))
 			   .pipe($.filesize())
